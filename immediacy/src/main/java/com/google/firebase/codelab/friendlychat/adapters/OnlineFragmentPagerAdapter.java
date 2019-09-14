@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.google.firebase.codelab.friendlychat.fragments.ConversationsFragment;
 import com.google.firebase.codelab.friendlychat.fragments.MapFragment;
+import com.google.firebase.codelab.friendlychat.fragments.NearbyListFragment;
 
 public class OnlineFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -18,11 +19,11 @@ public class OnlineFragmentPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
 
-                return MapFragment.newInstance();
+                return NearbyListFragment.newInstance();
             case 1:
                 return ConversationsFragment.newInstance();
             default:
-                return MapFragment.newInstance();
+                return NearbyListFragment.newInstance();
         }
     }
 

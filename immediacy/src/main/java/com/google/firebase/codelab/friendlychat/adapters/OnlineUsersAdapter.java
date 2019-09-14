@@ -1,6 +1,8 @@
 package com.google.firebase.codelab.friendlychat.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,20 +15,31 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.LocationCallback;
 import com.google.firebase.codelab.friendlychat.R;
+import com.google.firebase.codelab.friendlychat.models.Conversation;
 import com.google.firebase.codelab.friendlychat.models.UserProfile;
+import com.google.firebase.codelab.friendlychat.utils.DatabaseUtils;
+import com.google.firebase.database.DatabaseError;
 
 public class OnlineUsersAdapter extends ArrayAdapter<UserProfile> {
 
     private final int layoutResource;
     private final List<UserProfile> userProfileList;
     private OnAdapterInteractionListener activity;
+    private GeoFire geoFire;
+    private String currentUserId;
+    private Location startingLocation;
 
     public OnlineUsersAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<UserProfile> userProfiles) {
         super(context, resource, userProfiles);
 
         this.layoutResource = resource;
         this.userProfileList = userProfiles;
+        this.geoFire = DatabaseUtils.getNewLocationDatabase();
+        this.currentUserId = DatabaseUtils.getCurrentUUID();
 
         if (context instanceof OnAdapterInteractionListener) {
             activity = (OnAdapterInteractionListener) context;
@@ -34,7 +47,22 @@ public class OnlineUsersAdapter extends ArrayAdapter<UserProfile> {
             throw new RuntimeException(context.toString()
                     + " must implement OnAdapterInteractionListener");
         }
+
+        geoFire.getLocation(currentUserId, new LocationCallback() {
+            @Override
+            public void onLocationResult(String key, GeoLocation location) {
+                startingLocation = new Location("");
+                startingLocation.setLatitude(location.latitude);
+                startingLocation.setLongitude(location.longitude);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
@@ -46,20 +74,42 @@ public class OnlineUsersAdapter extends ArrayAdapter<UserProfile> {
 
         final UserProfile user = userProfileList.get(position);
 
+
         TextView userName = (TextView) convertView.findViewById(R.id.active_user_name);
         TextView userBio = (TextView) convertView.findViewById(R.id.active_user_bio);
+        TextView userDistance = (TextView) convertView.findViewById(R.id.active_user_distance);
         ImageView userAvatar = (ImageView) convertView.findViewById(R.id.active_user_avatar);
 
         userName.setText(user.getUserName());
         userBio.setText(user.getBio());
         userAvatar.setImageBitmap(user.getAvatar());
+//        userDistance.setText(" - (" + 100 +" meters away)");
 
-        //convertView.setOnClickListener(v -> activity.mountChatActivity(user.id));
+        if(startingLocation!=null){
+            geoFire.getLocation(user.getId(), new LocationCallback() {
+                @Override
+                public void onLocationResult(String key, GeoLocation location) {
+                    Location endingLocation = new Location("");
+                    endingLocation.setLatitude(location.latitude);
+                    endingLocation.setLongitude(location.longitude);
+                    float distance = startingLocation.distanceTo(endingLocation);
+                    userDistance.setText(" - (" + Math.round(distance) +" meters away)");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+
+        convertView.setOnClickListener(v -> activity.startChatActivity(user));
 
         return convertView;
     }
 
     public interface OnAdapterInteractionListener {
-        
+        void startChatActivity(UserProfile partnerProfile);
     }
 }

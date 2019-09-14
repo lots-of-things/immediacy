@@ -13,7 +13,6 @@ public class Conversation {
     public Conversation() {
     }
 
-
     public Conversation(String id, String ownerId, String partnerId) {
         this.id = id;
         this.ownerId = ownerId;

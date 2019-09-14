@@ -19,6 +19,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -44,6 +45,8 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.codelab.friendlychat.fragments.NearbyListFragment;
+import com.google.firebase.codelab.friendlychat.models.Conversation;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,7 +75,8 @@ public class OnlineActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnlineUsersAdapter.OnAdapterInteractionListener,
         ActiveConversationsAdapter.OnAdapterInteractionListener,
-        MapFragment.OnFragmentInteractionListener {
+        MapFragment.OnFragmentInteractionListener,
+        NearbyListFragment.OnFragmentInteractionListener {
 
     public static final int INTERVAL = 60000;
     private UserProfile userProfile;
@@ -255,6 +259,39 @@ public class OnlineActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    public void startChatActivity(UserProfile partnerProfile){
+        String partnerId = partnerProfile.getId();
+        String ownerId = DatabaseUtils.getCurrentUUID();
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("New conversation");
+
+        alertBuilder.setMessage("Create a new conversation?").setPositiveButton("Yes", (dialogInterface, i) -> {
+
+            Conversation ownerConversation = createConversation(ownerId, partnerId);
+            DatabaseUtils.getConversationsReferenceById(ownerId)
+                    .child(partnerId)
+                    .setValue(ownerConversation);
+
+            Conversation partnerConversation = createConversation(partnerId, ownerId);
+            DatabaseUtils.getConversationsReferenceById(partnerId)
+                    .child(ownerId)
+                    .setValue(partnerConversation);
+
+            mountChatActivity(partnerProfile);
+
+
+
+        }).setNegativeButton("No", (dialogInterface, i) -> {
+            dialogInterface.cancel();
+        });
+
+        AlertDialog alertDialog = alertBuilder.create();
+        alertDialog.show();
+
+
+    }
+
 
     /**
      * Load userProfile for the current firebaseUser with the online version
@@ -265,6 +302,19 @@ public class OnlineActivity extends AppCompatActivity
         database.child(Database.userProfiles).child(firebaseUser.getUid()).addListenerForSingleValueEvent(userProfileListener);
         loadProfileImage();
 
+    }
+
+    private Conversation createConversation(String ownerId, String partnerId) {
+        String key = DatabaseUtils.getConversationsReferenceById(ownerId)
+                .push()
+                .getKey();
+
+        Conversation conversation = new Conversation();
+        conversation.setId(key);
+        conversation.setOwnerId(ownerId);
+        conversation.setPartnerId(partnerId);
+
+        return conversation;
     }
 
 

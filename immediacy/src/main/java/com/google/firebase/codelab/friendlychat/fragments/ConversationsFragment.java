@@ -31,6 +31,7 @@ public class ConversationsFragment extends Fragment {
     private ActiveConversationsAdapter activeConversationsAdapter;
     private ListView conversationsView;
     private ProgressBar mainProgresBar;
+    private String userId;
     private final ValueEventListener getUserProfileListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -39,7 +40,7 @@ public class ConversationsFragment extends Fragment {
 
             if (mainProgresBar != null) mainProgresBar.setVisibility(View.GONE);
 
-            if (userProfile != null) {
+            if (userProfile != null && !userProfile.getId().equals(userId)) {
                 activeConversationsAdapter.add(userProfile);
                 DatabaseUtils.loadProfileImage(userProfile.getId(), bitmap -> {
                     userProfile.setAvatar(bitmap);
@@ -111,6 +112,8 @@ public class ConversationsFragment extends Fragment {
             mainProgresBar.setVisibility(View.VISIBLE);
         }
 
+        userId = DatabaseUtils.getCurrentUUID();
+
         DatabaseUtils.getConversationsReferenceById(DatabaseUtils.getCurrentUUID()).addChildEventListener(userConversationsListener);
     }
 
@@ -120,7 +123,7 @@ public class ConversationsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_conversations, container, false);
 
-        activeConversationsAdapter = new ActiveConversationsAdapter(getActivity(), R.layout.online_users_entry, conversationProfiles);
+        activeConversationsAdapter = new ActiveConversationsAdapter(getActivity(), R.layout.conversation_entry, conversationProfiles);
 
         conversationsView = (ListView) view.findViewById(R.id.conversation_users_list);
         conversationsView.setAdapter(activeConversationsAdapter);
