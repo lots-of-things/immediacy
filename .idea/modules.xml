@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/nearby-chat-lmao.iml" filepath="$PROJECT_DIR$/.idea/nearby-chat-lmao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/immediacy/app.iml" filepath="$PROJECT_DIR$/immediacy/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/immediacy/immediacy.iml" filepath="$PROJECT_DIR$/immediacy/immediacy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nearby-chat.iml" filepath="$PROJECT_DIR$/nearby-chat.iml" />
     </modules>
   </component>
 </project>

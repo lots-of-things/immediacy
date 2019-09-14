@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "26899471914",
+    "firebase_url": "https://immediacy-app.firebaseio.com",
+    "project_id": "immediacy-app",
+    "storage_bucket": "immediacy-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26899471914:android:e020aef1552f48cb29ad53",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.friendlychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26899471914-h93hjeoqnlar9dj9tuej1edps9mtsrj2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.codelab.friendlychat",
+            "certificate_hash": "494faeacb09e628c35616efc3564f257815988ca"
+          }
+        },
+        {
+          "client_id": "26899471914-aibhuv8btoe5frr3jtge93239k92c7nc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL5NfCk5Z9iXyJzzqo_KJH-I-0bgiAg5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26899471914-aibhuv8btoe5frr3jtge93239k92c7nc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
