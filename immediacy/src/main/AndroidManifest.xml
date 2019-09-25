@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.google.firebase.codelab.friendlychat">
+    package="org.bonkerfield.loft.immediacy">
 
     <!-- PROFILE IMAGE -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -29,7 +29,7 @@
         android:theme="@style/AppTheme">
 
         <provider
-            android:name="com.google.firebase.codelab.friendlychat.utils.GenericFileProvider"
+            android:name="org.bonkerfield.loft.immediacy.utils.GenericFileProvider"
             android:authorities="${applicationId}.my.package.name.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -39,7 +39,7 @@
         </provider>
 
         <activity
-            android:name="com.google.firebase.codelab.friendlychat.MainActivity"
+            android:name="org.bonkerfield.loft.immediacy.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -49,18 +49,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.google.firebase.codelab.friendlychat.activities.ProfileActivity"
+            android:name="org.bonkerfield.loft.immediacy.activities.ProfileActivity"
             android:label="@string/title_activity_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.google.firebase.codelab.friendlychat.MainActivity" />
+                android:value="org.bonkerfield.loft.immediacy.MainActivity" />
         </activity>
         <activity
-            android:name="com.google.firebase.codelab.friendlychat.activities.OnlineActivity"
+            android:name="org.bonkerfield.loft.immediacy.activities.OnlineActivity"
             android:label="@string/title_activity_online"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.google.firebase.codelab.friendlychat.activities.ChatActivity"
+            android:name="org.bonkerfield.loft.immediacy.activities.ChatActivity"
             android:label="@string/title_activity_chat" />
 
         <meta-data

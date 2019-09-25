@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.google.firebase.codelab.friendlychat.activities.ProfileActivity">
+    tools:context="org.bonkerfield.loft.immediacy.activities.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
