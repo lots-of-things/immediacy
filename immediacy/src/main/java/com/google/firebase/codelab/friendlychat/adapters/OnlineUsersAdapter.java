@@ -51,9 +51,11 @@ public class OnlineUsersAdapter extends ArrayAdapter<UserProfile> {
         geoFire.getLocation(currentUserId, new LocationCallback() {
             @Override
             public void onLocationResult(String key, GeoLocation location) {
-                startingLocation = new Location("");
-                startingLocation.setLatitude(location.latitude);
-                startingLocation.setLongitude(location.longitude);
+                if (location != null) {
+                    startingLocation = new Location("");
+                    startingLocation.setLatitude(location.latitude);
+                    startingLocation.setLongitude(location.longitude);
+                }
             }
 
             @Override
